@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Food Delivery Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fdfdfd;
+      color: #333;
+    }
+
+    header {
+      background-color: #ff5722;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card h3 {
+      margin-bottom: 10px;
+    }
+
+    .value {
+      font-size: 24px;
+      font-weight: bold;
+      color: #ff5722;
+    }
+
+    canvas {
+      width: 100% !important;
+      height: auto !important;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    ul li {
+      padding: 6px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    footer {
+      text-align: center;
+      padding: 10px;
+      color: #777;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🚚 Food Delivery Dashboard</h1>
+    <p>Monitor orders, revenue & trends</p>
+  </header>
+
+  <main class="container">
+    <div class="card">
+      <h3>Total Orders</h3>
+      <div class="value" id="totalOrders">0</div>
+    </div>
+
+    <div class="card">
+      <h3>Pending Deliveries</h3>
+      <div class="value" id="pendingDeliveries">0</div>
+    </div>
+
+    <div class="card">
+      <h3>Total Revenue</h3>
+      <div class="value" id="totalRevenue">$0.00</div>
+    </div>
+
+    <div class="card">
+      <h3>Top Food Items</h3>
+      <ul id="topItems">
+        <!-- Populated by JS -->
+      </ul>
+    </div>
+
+    <div class="card" style="grid-column: span 2;">
+      <h3>Daily Orders</h3>
+      <canvas id="ordersChart" width="400" height="200"></canvas>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2025 FoodDash Inc.
+  </footer>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- JavaScript Logic -->
+  <script>
+    // Mock data
+    const totalOrders = 1245;
+    const pendingDeliveries = 37;
+    const totalRevenue = 15892.50;
+    const topItems = ['Margherita Pizza', 'Cheeseburger', 'Sushi Platter', 'Chicken Wings', 'Pasta Alfredo'];
+    const dailyOrders = [150, 180, 200, 170, 210, 250, 190];
+
+    // Populate DOM
+    document.getElementById('totalOrders').textContent = totalOrders;
+    document.getElementById('pendingDeliveries').textContent = pendingDeliveries;
+    document.getElementById('totalRevenue').textContent = `$${totalRevenue.toFixed(2)}`;
+
+    const topItemsList = document.getElementById('topItems');
+    topItems.forEach(item => {
+      const li = document.createElement('li');
+      li.textContent = item;
+      topItemsList.appendChild(li);
+    });
+
+    // Draw Chart
+    const ctx = document.getElementById('ordersChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        datasets: [{
+          label: 'Orders',
+          data: dailyOrders,
+          borderColor: '#ff5722',
+          backgroundColor: 'rgba(255,87,34,0.1)',
+          fill: true,
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
